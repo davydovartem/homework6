@@ -28,7 +28,7 @@ namespace Homework6
             string msg = "Вставить новую запись? (Выход - Escape)";
             while (true)
             {
-                int printed = PrintWorkersSB(fileName);
+                int printed = PrintWorkers2(fileName);
                 Console.WriteLine(msg);
                 //Выход из цикла по Esc
                 if (Console.ReadKey().Key == ConsoleKey.Escape) break;
