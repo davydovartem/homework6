@@ -28,6 +28,7 @@ namespace Homework6
             string msg = "Вставить новую запись? (Выход - Escape)";
             while (true)
             {
+                Console.Clear();
                 int printed = PrintWorkers2(fileName);
                 Console.WriteLine(msg);
                 //Выход из цикла по Esc
@@ -37,13 +38,12 @@ namespace Homework6
         }
 
         /// <summary>
-        /// Выводит в консоль форматированного текстового файла
+        /// Выводит в консоль строки форматированного текстового файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Возвращает количество выведенных строк</returns>
         static int PrintWorkers1(string path)
         {
-            Console.Clear();
             //будем считать выведенные строки
             int stringsCount = 0;
             using (var sr = File.OpenText(path))
@@ -74,23 +74,31 @@ namespace Homework6
             }
             return stringsCount;
         }
+        /// <summary>
+        /// Выводит в консоль строки форматированного текстового файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>Возвращает количество выведенных строк</returns>
         static int PrintWorkers2(string path)
         {
-            Console.Clear();
-            var formatLines = new StringBuilder();
-            formatLines.AppendFormat($"{"ID",-5}{"Дата и время добавления",-25}{"Ф.И.О.",-35}{"Возраст",-10}{"Рост",-5}" +
-                                    $"{"Дата рождения",-15}{"Место рождения"}\n");
-            string[] fileLines = File.ReadAllLines(path);
-            string[] fields;
+            var formatLines = new StringBuilder(FormatString("ID", "Дата и время добавления", "Ф.И.О.", "Возраст", "Рост", "Дата рождения", "Место рождения"));
+            var fileLines = File.ReadAllLines(path);
             foreach (string v in fileLines)
             {
-                fields = v.Split('#');
-                formatLines.AppendFormat($"{fields[0],-5}{fields[1],-25}{fields[2],-35}{fields[3],-10}{fields[4],-5}" +
-                                        $"{fields[5],-15}{fields[6]}\n");
+                formatLines.Append(FormatString(v.Split('#')));
             }
             Console.WriteLine(formatLines.ToString());
 
             return fileLines.Length;
+        }
+        /// <summary>
+        /// Расставляет аргументы на нужные места для красивого вывода
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        static string FormatString(params string[] args)
+        {
+            return String.Format($"{args[0],-5}{args[1],-25}{args[2],-35}{args[3],-10}{args[4],-5}{args[5],-15}{args[6]}\n");
         }
         /// <summary>
         /// Добавляет запись о работнике в форматированный текстовый файл
@@ -99,20 +107,19 @@ namespace Homework6
         /// <param name="id">Id сотрудника</param>
         static void AddWorker(string path, int id)
         {
-            using (var sw = File.AppendText(path))
-            {
-                sw.Write(id + "#" + DateTime.Now.ToString() + "#");
-                Console.Write("\nВведите Ф.И.О.: ");
-                sw.Write(Console.ReadLine() + "#");
-                Console.Write("\nВведите возраст: ");
-                sw.Write(Console.ReadLine() + "#");
-                Console.Write("\nВведите рост: ");
-                sw.Write(Console.ReadLine() + "#");
-                Console.Write("\nВведите дату рождения: ");
-                sw.Write(Console.ReadLine() + "#");
-                Console.Write("\nВведите место рождения: ");
-                sw.Write(Console.ReadLine() + "\n");
-            }
+            var sb = new StringBuilder(id.ToString());
+            sb.Append("#").Append(DateTime.Now.ToString()).Append("#");
+            Console.Write("\nВведите Ф.И.О.: ");
+            sb.Append(Console.ReadLine()).Append("#");
+            Console.Write("\nВведите возраст: ");
+            sb.Append(Console.ReadLine()).Append("#");
+            Console.Write("\nВведите рост: ");
+            sb.Append(Console.ReadLine()).Append("#");
+            Console.Write("\nВведите дату рождения: ");
+            sb.Append(Console.ReadLine()).Append("#");
+            Console.Write("\nВведите место рождения: ");
+            sb.Append(Console.ReadLine()).AppendLine();
+            File.AppendAllText(path, sb.ToString());
         }
         /// <summary>
         /// Проверяет пути файлов на неправильные символы
