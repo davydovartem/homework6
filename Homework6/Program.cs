@@ -111,7 +111,7 @@ namespace Homework6
                 Console.Write("\nВведите дату рождения: ");
                 sw.Write(Console.ReadLine() + "#");
                 Console.Write("\nВведите место рождения: ");
-                sw.Write(Console.ReadLine());
+                sw.Write(Console.ReadLine() + "\n");
             }
         }
         /// <summary>
