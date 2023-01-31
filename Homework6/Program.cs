@@ -72,6 +72,7 @@ namespace Homework6
                     }
                 }
             }
+
             return stringsCount;
         }
         /// <summary>
@@ -84,9 +85,7 @@ namespace Homework6
             var formatLines = new StringBuilder(FormatString("ID", "Дата и время добавления", "Ф.И.О.", "Возраст", "Рост", "Дата рождения", "Место рождения"));
             var fileLines = File.ReadAllLines(path);
             foreach (string v in fileLines)
-            {
                 formatLines.Append(FormatString(v.Split('#')));
-            }
             Console.WriteLine(formatLines.ToString());
 
             return fileLines.Length;
@@ -119,6 +118,7 @@ namespace Homework6
             sb.Append(Console.ReadLine()).Append("#");
             Console.Write("\nВведите место рождения: ");
             sb.Append(Console.ReadLine()).AppendLine();
+
             File.AppendAllText(path, sb.ToString());
         }
         /// <summary>
@@ -140,6 +140,7 @@ namespace Homework6
                     }
                 }
             }
+
             return true;
         }
     }
