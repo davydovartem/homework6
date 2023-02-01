@@ -10,20 +10,36 @@ namespace Homework6
         {
             string[] args = Environment.GetCommandLineArgs();
             //проверяем, корректно ли заданы аргументы
-            if (args.Length <= 1 || !CheckFilesPaths(args))
+            if (!CheckFilesPaths(args))
             {
                 Console.WriteLine("Неправильно задан путь к файлу! Использование:\n");
                 Console.WriteLine(Path.GetFileName(args[0]) + " <имя_файла>");
                 Console.WriteLine("\nЕсли файл по указонному пути не существует, он будет создан.");
                 Environment.Exit(0);
             }
-            //создаем файл, если не существует
-            string fileName = Path.GetFullPath(args[1]);
-            if (!File.Exists(fileName))
+            string fileName;
+            if (args.Length <= 1)
             {
-                Console.WriteLine($"Создаем файл {args[1]}");
-                var fs = File.Create(fileName);
-                fs.Close();
+                //создаем файл, если не существует и не задан аргументом
+                fileName = @".\workers.txt";
+                if (!File.Exists(fileName))
+                {
+                    Console.WriteLine("Создаем файл именем по умолчанию: workers.txt");
+                    var fs = File.Create(fileName);
+                    fs.Close();
+                }
+
+            }
+            else
+            {
+                //создаем файл, если не существует
+                fileName = Path.GetFullPath(args[1]);
+                if (!File.Exists(fileName))
+                {
+                    Console.WriteLine($"Создаем файл {args[1]}");
+                    var fs = File.Create(fileName);
+                    fs.Close();
+                }
             }
 
             string msg = "Вставить новую запись? (Выход - Escape)";
