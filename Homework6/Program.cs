@@ -22,7 +22,8 @@ namespace Homework6
             if (!File.Exists(fileName))
             {
                 Console.WriteLine($"Создаем файл {args[1]}");
-                File.CreateText(fileName);
+                var fs = File.Create(fileName);
+                fs.Close();
             }
 
             string msg = "Вставить новую запись? (Выход - Escape)";
